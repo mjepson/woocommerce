@@ -5,6 +5,7 @@ filter:
   - dummy-data/*
   - i18n/*
   - includes/api/v1/*
+  - includes/api/v2/*
   - includes/libraries/*
   - includes/updates/*
   - includes/gateways/simplify-commerce/includes/*
@@ -26,14 +27,3 @@ checks:
 
 tools:
   sensiolabs_security_checker: true
-  php_code_sniffer:
-    config:
-      standard: "WordPress"
-
-coding_style:
-  php:
-    upper_lower_casing:
-      keywords:
-        general: lower
-      constants:
-        true_false_null: lower

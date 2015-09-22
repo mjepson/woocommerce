@@ -75,7 +75,9 @@ class WC_Tax_Rate_Importer extends WP_Importer {
 		if ( function_exists( 'gc_enable' ) ) {
 			gc_enable();
 		}
-		@set_time_limit(0);
+		if ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+			@set_time_limit( 0 );
+		}
 		@ob_flush();
 		@flush();
 		@ini_set( 'auto_detect_line_endings', '1' );
@@ -106,13 +108,13 @@ class WC_Tax_Rate_Importer extends WP_Importer {
 
 		$loop = 0;
 
-		if ( ( $handle = fopen( $file, "r" ) ) !== FALSE ) {
+		if ( ( $handle = fopen( $file, "r" ) ) !== false ) {
 
 			$header = fgetcsv( $handle, 0, $this->delimiter );
 
 			if ( 10 === sizeof( $header ) ) {
 
-				while ( ( $row = fgetcsv( $handle, 0, $this->delimiter ) ) !== FALSE ) {
+				while ( ( $row = fgetcsv( $handle, 0, $this->delimiter ) ) !== false ) {
 
 					list( $country, $state, $postcode, $city, $rate, $name, $priority, $compound, $shipping, $class ) = $row;
 

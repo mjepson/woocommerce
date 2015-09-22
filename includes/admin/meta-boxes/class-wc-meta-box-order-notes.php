@@ -25,6 +25,8 @@ class WC_Meta_Box_Order_Notes {
 
 		$args = array(
 			'post_id'   => $post->ID,
+			'orderby'   => 'comment_ID',
+			'order'     => 'DESC',
 			'approve'   => 'approve',
 			'type'      => 'order_note'
 		);
@@ -42,9 +44,10 @@ class WC_Meta_Box_Order_Notes {
 			foreach( $notes as $note ) {
 
 				$note_classes = get_comment_meta( $note->comment_ID, 'is_customer_note', true ) ? array( 'customer-note', 'note' ) : array( 'note' );
-
+				$note_classes = apply_filters( 'woocommerce_order_note_class', $note_classes, $note );
+				
 				?>
-				<li rel="<?php echo absint( $note->comment_ID ) ; ?>" class="<?php echo implode( ' ', $note_classes ); ?>">
+				<li rel="<?php echo absint( $note->comment_ID ) ; ?>" class="<?php echo esc_attr( implode( ' ', $note_classes ) ); ?>">
 					<div class="note_content">
 						<?php echo wpautop( wptexturize( wp_kses_post( $note->comment_content ) ) ); ?>
 					</div>
@@ -70,8 +73,8 @@ class WC_Meta_Box_Order_Notes {
 			</p>
 			<p>
 				<select name="order_note_type" id="order_note_type">
-					<option value="customer"><?php _e( 'Customer note', 'woocommerce' ); ?></option>
 					<option value=""><?php _e( 'Private note', 'woocommerce' ); ?></option>
+					<option value="customer"><?php _e( 'Note to customer', 'woocommerce' ); ?></option>
 				</select>
 				<a href="#" class="add_note button"><?php _e( 'Add', 'woocommerce' ); ?></a>
 			</p>
